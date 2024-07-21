@@ -9,60 +9,7 @@ import Button from "@/components/Button";
 import AnimationButton from "@/components/AnimationButton";
 import Features from "@/components/Features";
 import DownloadSection from "@/components/DownloadSection";
-import { useEffect } from "react";
-import gsap from "gsap";
 export default function Home() {
-  useEffect(() => {
-    var mouse = { x: 0, y: 0 };
-    var dotPos = { x: 0, y: 0 };
-    var ballPos = { x: 0, y: 0 };
-    var dotRatio = 0.2;
-    var ballRatio = 0.1;
-    var dot = document.getElementById("dot");
-    var ball = document.getElementById("ball");
-    var isMouseMoving = false;
-    var idleTimer;
-    var ballAnimation;
-
-    gsap.set(dot, { xPercent: -50, yPercent: -50 });
-    gsap.set(ball, { xPercent: -50, yPercent: -50 });
-
-    document.addEventListener("mousemove", (e) => {
-      mouse.x = e.pageX;
-      mouse.y = e.pageY;
-      isMouseMoving = true;
-      clearTimeout(idleTimer);
-      idleTimer = setTimeout(() => {
-        isMouseMoving = false;
-      }, 2000);
-    });
-
-    gsap.ticker.add(() => {
-      dotPos.x += (mouse.x - dotPos.x) * dotRatio;
-      dotPos.y += (mouse.y - dotPos.y) * dotRatio;
-      gsap.set(dot, { x: dotPos.x, y: dotPos.y });
-
-      ballPos.x += (dotPos.x - ballPos.x) * ballRatio;
-      ballPos.y += (dotPos.y - ballPos.y) * ballRatio;
-      gsap.set(ball, { x: ballPos.x, y: ballPos.y });
-
-      if (!isMouseMoving && !ballAnimation) {
-        ballAnimation = gsap
-          .timeline({ repeat: -1, yoyo: true, ease: "power1.inOut" })
-          .to(ball, { scale: 1.2, duration: 0.75 });
-      } else if (isMouseMoving && ballAnimation) {
-        ballAnimation.kill();
-        ballAnimation = null;
-        gsap.to(ball, { scale: 1, duration: 0.75, ease: "power1.inOut" });
-      }
-    });
-
-    return () => {
-      document.removeEventListener("mousemove", () => {});
-      gsap.ticker.remove(() => {});
-      if (ballAnimation) ballAnimation.kill();
-    };
-  }, []);
 
   return (
     <main className="flex  flex-col items-center justify-between gap-10 bg-[#131416]">
